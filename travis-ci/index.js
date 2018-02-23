@@ -12,15 +12,17 @@ module.exports = function (context, cb) {
   // Send outgoing webhook on Forestry action success
   try {
     if (context.body.success) {
-      var travisPayload = makeTravisPayload()
+      var payload = makeTravisPayload()
       
       // Send the outgoing Travis request; handle error from Travis
       request({
-        uri: context.data.TRAVIS_URI,
+        method: 'POST',
+        uri: context.data.URI,
         headers: {
           "Travis-API-Version": "3",
           "Authorization": `token ${context.data.TRAVIS_TOKEN}`,
         },
+        body: payload,
         json: true
       })
         .then(function(res) {
