@@ -14,7 +14,7 @@ module.exports = function (context, cb) {
     if (context.body.success) {
       var payload = {}
       
-      // Send the outgoing Travis request; handle error from Travis
+      // Send the outgoing request
       request({
         method: 'POST',
         uri: context.data.URI,
@@ -28,10 +28,10 @@ module.exports = function (context, cb) {
           cb(null, res)
         })
         .catch(function(err) {
-          cb(err)
+          throw new Error(err)
         })
       
-    // Log the error message from Forestry on failure
+    // Log the errors on failure
     } else {
        cb(context.body.error); 
     }
